@@ -1,11 +1,13 @@
 package com.example.notes;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -15,15 +17,13 @@ public class MainActivity extends AppCompatActivity implements NoteListFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        setNoteDetailFragment();
         setNoteListFragment();
-
     }
 
-    private void setNoteDetailFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragContainer, new NoteDetailFragment())
-                .commit();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     private void setNoteListFragment() {
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements NoteListFragment.
     @Override
     public void itemClicked(long id) {
         View fragmentContainer = findViewById(R.id.fragContainer);
-        if(fragmentContainer != null) {
+        if (fragmentContainer != null) {
             NoteDetailFragment details = new NoteDetailFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             details.setNote(id);
@@ -44,9 +44,10 @@ public class MainActivity extends AppCompatActivity implements NoteListFragment.
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
         } else {
-            Intent intent = new Intent(this,DetailActivity.class);
-            intent.putExtra(DetailActivity.EXTRA_NOTE_ID,(int)id);
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra(DetailActivity.EXTRA_NOTE_ID, (int) id);
             startActivity(intent);
         }
     }
+
 }
